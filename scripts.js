@@ -57,26 +57,38 @@ class Board {
         return this;
     }
 
+    allowedToMove(direction) {
+        const constraints = this.maze.structure[this.cursor.row][this.cursor.column];
+
+        // the constraints describe walls, i.e. where the cursor CAN’T go
+
+        if (constraints & direction) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     attemptCursorMove(e) {
         e = e || window.event;
 
         // up arrow
-        if (e.keyCode == '38' && this.cursor.row > 0) {
+        if (e.keyCode == '38' && this.allowedToMove(0b1000)) {
             this.cursor.moveUp();
         }
 
         // down arrow
-        else if (e.keyCode == '40' && this.cursor.row < (this.rows - 1)) {
+        else if (e.keyCode == '40' && this.allowedToMove(0b0010)) {
             this.cursor.moveDown();
         }
 
         // left arrow
-        else if (e.keyCode == '37' && this.cursor.column > 0) {
+        else if (e.keyCode == '37' && this.allowedToMove(0b0001)) {
             this.cursor.moveLeft();
         }
 
         // right arrow
-        else if (e.keyCode == '39' && this.cursor.column < (this.columns - 1)) {
+        else if (e.keyCode == '39' && this.allowedToMove(0b0100)) {
             this.cursor.moveRight();
         }
     }
