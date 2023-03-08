@@ -1,0 +1,50 @@
+.board {
+  position: relative;
+}
+
+.square {
+  display: inline-block;
+  background: pink;
+  border: none;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+.square.top-on {
+  border-top: 5px solid red;
+}
+
+.square.right-on {
+  border-right: 5px solid red;
+}
+
+.square.bottom-on {
+  border-bottom: 5px solid red;
+}
+
+.square.left-on {
+  border-left: 5px solid red;
+}
+
+.row:first-child .square {
+  border-top-width: 10px;
+}
+
+.row:last-child .square {
+  border-bottom-width: 10px;
+}
+
+.square:first-child {
+  border-left-width: 10px;
+}
+
+.square:last-child {
+  border-right-width: 10px;
+}
+
+.cursor {
+  display: block;
+  background-color: blue;
+  border-radius: 50%;
+  position: absolute;
+}
