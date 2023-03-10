@@ -1,13 +1,27 @@
+body {
+  text-align: center;
+}
+
 .board {
   position: relative;
+  margin: 100px 0 0 0;
+  display: inline-block;
 }
 
 .square {
   display: inline-block;
-  background: pink;
+  background-color: pink;
   border: none;
   vertical-align: middle;
   box-sizing: border-box;
+}
+
+.square.entered {
+  background-color: gold;
+}
+
+.square.abandoned {
+  background-color: rgb(230, 119, 138);
 }
 
 .square.top-on {
