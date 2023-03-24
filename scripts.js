@@ -34,7 +34,7 @@ class Square {
         this.elem.style.width = `${unitSize}px`;
         this.elem.style.height = `${unitSize}px`;
 
-        this.drawWalls(this.elem, walls);
+        Square.drawWalls(this.elem, walls);
 
         this.enter = () => {
             this.elem.classList.add("entered");
@@ -48,7 +48,7 @@ class Square {
         return this;
     }
 
-    drawWalls(elem, walls) {
+    static drawWalls(elem, walls) {
         const top =  directions.up.mask & walls;
         const right = directions.right.mask & walls;
         const bottom = directions.down.mask & walls;
@@ -134,8 +134,8 @@ class Maze {
 
         boardElem.appendChild(mazeElem);
 
-        this.structure = this.makeMaze(rows, columns);
-        this.start = { row: -1, column: 1 };
+        this.structure = Maze.makeMaze(rows, columns);
+        this.start = { row: -1, column: 0 };
 
         this.rows = this.structure.map(row => {
             return row.map(walls => {
@@ -158,14 +158,75 @@ class Maze {
         return this;
     }
 
-    makeMaze(rows, columns) {
-        return [
-            [0b1001, 0b0100, 0b1001, 0b1000, 0b1010, 0b1100],
-            [0b0101, 0b0011, 0b0110, 0b0101, 0b1001, 0b0100],
-            [0b0001, 0b1110, 0b1001, 0b0110, 0b0101, 0b0101],
-            [0b0101, 0b1001, 0b0110, 0b1001, 0b0110, 0b0101],
-            [0b0111, 0b0101, 0b1011, 0b0110, 0b1011, 0b0110],
-        ];
+    static unvisited(node) {
+        // i.e. is unconnected, i.e. has all its walls still
+        return node === 0b1111;
+    }
+
+    static removeWall(nodes, row, column, neighbourDirection) {
+        let nRow = row;
+        let nColumn = column;
+
+        if (neighbourDirection === directions.up) {
+            nRow--;
+        }
+
+        if (neighbourDirection === directions.down) {
+            nRow++;
+        }
+
+        if (neighbourDirection === directions.left) {
+            nColumn--;
+        }
+
+        if (neighbourDirection === directions.right) {
+            nColumn++;
+        }
+
+        if (row >= 0 && row < nodes.length && column >= 0 && column < nodes[row].length) {
+            nodes[row][column] = nodes[row][column] - neighbourDirection.mask;
+        }
+
+        if (nRow >= 0 && nRow < nodes.length && nColumn >= 0 && nColumn < nodes[nRow].length) {
+            nodes[nRow][nColumn] = nodes[nRow][nColumn] - neighbourDirection.inverse;
+        }
+    }
+
+    static makeNodes(rows, columns) {
+        let row = 0;
+        const nodes = [];
+
+        while (row < rows) {
+            let column = 0;
+            nodes.push([]);
+            while (column < columns) {
+                nodes[row].push(0b1111);
+                column++;
+            }
+            row++;
+        }
+
+        return nodes;
+    }
+
+    static makeMaze(rows, columns) {
+
+        const nodes = Maze.makeNodes(rows, columns);
+
+        Maze.removeWall(nodes, 0, 0, directions.up);
+        Maze.removeWall(nodes, rows - 1, 1, directions.down);
+
+        nodes.forEach((row, i) => {
+            row.forEach((_, j) => {
+                if ((Math.random() > 0.5 || (i + 1) === rows) && (j + 1) < columns) {
+                    Maze.removeWall(nodes, i, j, directions.right);
+                } else if ((i + 1)< rows) {
+                    Maze.removeWall(nodes, i, j, directions.down);
+                }
+            });
+        });
+
+        return nodes;
     }
 
     enter(row, column) {
@@ -253,7 +314,95 @@ class Cursor {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const board = new Board(5, 6, 100);
+    const board = new Board(10, 20, 50);
     document.body.appendChild(board.elem);
 });
 
+function runTests() {
+    const rows = 3;
+    const columns = 7;
+    const maze = Maze.makeMaze(rows, columns);
+
+    console.log("Maze.makeMaze returns a grid with the desired number of rows and columns:", (function () {
+        return (maze.length === rows) && Maze.makeMaze(rows, columns).filter((row) => {
+            return row.length === columns;
+        }).length === rows;
+    })());
+
+    console.log("Maze.removeWalls can be used to craft the desired maze", (function () {
+
+        const desiredMaze = [
+            [0b1001, 0b0100, 0b1001, 0b1000, 0b1010, 0b1100],
+            [0b0101, 0b0011, 0b0110, 0b0101, 0b1001, 0b0100],
+            [0b0001, 0b1110, 0b1001, 0b0110, 0b0101, 0b0101],
+            [0b0101, 0b1001, 0b0110, 0b1001, 0b0110, 0b0101],
+            [0b0111, 0b0101, 0b1011, 0b0110, 0b1011, 0b0110],
+        ];
+
+        const nodes = Maze.makeNodes(desiredMaze.length, desiredMaze[0].length);
+
+        Maze.removeWall(nodes, 0, 0, directions.right);
+        Maze.removeWall(nodes, 0, 0, directions.down);
+
+        Maze.removeWall(nodes, 0, 1, directions.up);
+        Maze.removeWall(nodes, 0, 1, directions.down);
+
+        Maze.removeWall(nodes, 0, 2, directions.right);
+        Maze.removeWall(nodes, 0, 2, directions.down);
+
+        Maze.removeWall(nodes, 0, 3, directions.right);
+        Maze.removeWall(nodes, 0, 3, directions.down);
+
+        Maze.removeWall(nodes, 0, 4, directions.right);
+
+        Maze.removeWall(nodes, 0, 5, directions.down);
+
+        Maze.removeWall(nodes, 1, 0, directions.down);
+
+        Maze.removeWall(nodes, 1, 1, directions.right);
+
+        Maze.removeWall(nodes, 1, 3, directions.down);
+
+        Maze.removeWall(nodes, 1, 4, directions.right);
+        Maze.removeWall(nodes, 1, 4, directions.down);
+
+        Maze.removeWall(nodes, 1, 5, directions.down);
+
+        Maze.removeWall(nodes, 2, 0, directions.right);
+        Maze.removeWall(nodes, 2, 0, directions.down);
+
+        Maze.removeWall(nodes, 2, 2, directions.right);
+        Maze.removeWall(nodes, 2, 2, directions.down);
+
+        Maze.removeWall(nodes, 2, 4, directions.down);
+
+        Maze.removeWall(nodes, 2, 5, directions.down);
+
+        Maze.removeWall(nodes, 3, 0, directions.down);
+
+        Maze.removeWall(nodes, 3, 1, directions.right);
+        Maze.removeWall(nodes, 3, 1, directions.down);
+
+        Maze.removeWall(nodes, 3, 3, directions.right);
+        Maze.removeWall(nodes, 3, 3, directions.down);
+
+        Maze.removeWall(nodes, 3, 5, directions.down);
+
+        Maze.removeWall(nodes, 4, 1, directions.down);
+
+        Maze.removeWall(nodes, 4, 2, directions.right);
+
+        Maze.removeWall(nodes, 4, 4, directions.right);
+
+        return desiredMaze.filter((row, i) => {
+            return row.filter((desiredValue, j) => {
+                return desiredValue === nodes[i][j];
+            }).length === desiredMaze[0].length;
+        }).length === desiredMaze.length;
+
+    })())
+
+    console.log(maze);
+}
+
+runTests();
