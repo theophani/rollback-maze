@@ -17,7 +17,7 @@ body {
 }
 
 .square.entered {
-  background-color: gold;
+  background-color: rgb(255, 106, 0);
 }
 
 .square.abandoned {
@@ -25,19 +25,19 @@ body {
 }
 
 .square.top-on {
-  border-top: 5px solid red;
+  border-top: 5px solid rgb(125, 0, 0);
 }
 
 .square.right-on {
-  border-right: 5px solid red;
+  border-right: 5px solid rgb(183, 0, 0);
 }
 
 .square.bottom-on {
-  border-bottom: 5px solid red;
+  border-bottom: 5px solid rgb(183, 0, 0);
 }
 
 .square.left-on {
-  border-left: 5px solid red;
+  border-left: 5px solid rgb(125, 0, 0);
 }
 
 .row:first-child .square {
@@ -61,4 +61,19 @@ body {
   background-color: blue;
   border-radius: 50%;
   position: absolute;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #333;
+  }
+  .cursor {
+    background-color: rgb(76, 76, 255);
+  }
+  .square {
+    background-color: rgb(255, 124, 146);
+  }
+  .square.abandoned {
+    background-color: rgb(208, 62, 86);
+  }
 }
