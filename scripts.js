@@ -134,9 +134,9 @@ class Maze {
 
         boardElem.appendChild(mazeElem);
 
-        this.start = { row: -1, column: Math.round(Math.random()*columns) };
+        this.start = { row: -1, column: Math.floor(Math.random()*columns) };
 
-        this.structure = Maze.makeMaze(rows, columns, this.start.column, Math.round(Math.random() * columns));
+        this.structure = Maze.makeMaze(rows, columns, this.start.column, Math.floor(Math.random() * columns));
 
         this.rows = this.structure.map(row => {
             return row.map(walls => {
