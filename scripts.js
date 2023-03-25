@@ -221,10 +221,12 @@ class Maze {
 
         nodes.forEach((row, i) => {
             row.forEach((_, j) => {
-                if ((Math.random() > 0.5 || i === lastRowIndex) && j < lastColumnIndex) {
+                if (i === 0 && j < lastColumnIndex) {
                     Maze.removeWall(nodes, i, j, directions.right);
-                } else if (i < lastRowIndex) {
-                    Maze.removeWall(nodes, i, j, directions.down);
+                } else if (Math.random() > 0.5 && j < lastColumnIndex) {
+                    Maze.removeWall(nodes, i, j, directions.right);
+                } else if (i > 0) {
+                    Maze.removeWall(nodes, i, j, directions.up);
                 }
             });
         });
