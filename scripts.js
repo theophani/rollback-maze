@@ -214,13 +214,14 @@ class Maze {
 
         const nodes = Maze.makeNodes(rows, columns);
         const lastRowIndex = rows - 1;
+        const lastColumnIndex = columns - 1;
 
         Maze.removeWall(nodes, 0, startColumn, directions.up);
         Maze.removeWall(nodes, lastRowIndex, endColumn, directions.down);
 
         nodes.forEach((row, i) => {
             row.forEach((_, j) => {
-                if ((Math.random() > 0.5 || i === lastRowIndex) && (j + 1) < columns) {
+                if ((Math.random() > 0.5 || i === lastRowIndex) && j < lastColumnIndex) {
                     Maze.removeWall(nodes, i, j, directions.right);
                 } else if (i < lastRowIndex) {
                     Maze.removeWall(nodes, i, j, directions.down);
