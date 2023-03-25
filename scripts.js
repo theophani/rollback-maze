@@ -214,10 +214,15 @@ class Maze {
 
         const nodes = Maze.makeNodes(rows, columns);
         const lastRowIndex = rows - 1;
-        const lastColumnIndex = columns - 1;
 
         Maze.removeWall(nodes, 0, startColumn, directions.up);
         Maze.removeWall(nodes, lastRowIndex, endColumn, directions.down);
+
+        return Maze.makeNwBinaryTree(nodes);
+    }
+
+    static makeNwBinaryTree(nodes) {
+        const lastColumnIndex = nodes[0].length - 1;
 
         nodes.forEach((row, i) => {
             row.forEach((_, j) => {
