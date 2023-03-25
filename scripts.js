@@ -9,15 +9,19 @@ if (![].at) {
 
 const directions = {
     up: {
+        name: "up",
         mask: 0b1000,
     },
     down: {
+        name: "down",
         mask: 0b0010,
     },
     left: {
+        name: "left",
         mask: 0b0001,
     },
     right: {
+        name: "right",
         mask: 0b0100,
     },
 };
@@ -215,10 +219,126 @@ class Maze {
         const nodes = Maze.makeNodes(rows, columns);
         const lastRowIndex = rows - 1;
 
-        Maze.makeNwBinaryTree(nodes);
+        Maze.performHuntAndKill(nodes);
 
         Maze.removeWall(nodes, 0, startColumn, directions.up);
         Maze.removeWall(nodes, lastRowIndex, endColumn, directions.down);
+
+        return nodes;
+    }
+
+    static neighbourAt(nodes, selected, direction) {
+        let row = selected.row;
+        let column = selected.column;
+
+        if (direction === directions.up) {
+            row--;
+        }
+
+        if (direction === directions.down) {
+            row++;
+        }
+
+        if (direction === directions.left) {
+            column--;
+        }
+
+        if (direction === directions.right) {
+            column++;
+        }
+
+        if (nodes[row] && nodes[row][column]) {
+            return {
+                row,
+                column,
+                direction,
+            };
+        }
+
+        return false;
+    }
+
+    static performHuntAndKill(nodes) {
+
+        let selected = {
+            row: Math.floor(Math.random() * nodes.length),
+            column: Math.floor(Math.random() * nodes[0].length),
+        }
+
+        while (selected) {
+            selected = advanceToNeighbour(selected, nodes) || findAdjacentStart(nodes);
+        }
+
+        function findAdjacentStart(nodes) {
+            let selected = firstUnvisitedAdjacentNode(nodes);
+
+            if (selected) {
+                let neighbour = randomNeighbour(visitedNeighbours(nodes, selected));
+                Maze.removeWall(nodes, selected.row, selected.column, neighbour.direction);
+            }
+
+            return selected;
+        }
+
+        function firstUnvisitedAdjacentNode(nodes) {
+            for (let row = 0; row < nodes.length; row++) {
+                for (let column = 0; column < nodes[0].length; column++) {
+                    if (Maze.unvisited(nodes[row][column])) {
+                        let neighbours = visitedNeighbours(nodes, { row, column });
+                        if (neighbours.length) {
+                            return { row, column };
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        function advanceToNeighbour(selected, nodes) {
+            let neighbours = unvisitedNeighbours(nodes, selected);
+            let neighbour = randomNeighbour(neighbours);
+
+            if (neighbour) {
+                Maze.removeWall(nodes, selected.row, selected.column, neighbour.direction);
+                return neighbour;
+            }
+
+            return false;
+        }
+
+        function unvisitedNeighbours(nodes, selected) {
+            let unvisitedNeighbours = [
+                Maze.neighbourAt(nodes, selected, directions.up),
+                Maze.neighbourAt(nodes, selected, directions.down),
+                Maze.neighbourAt(nodes, selected, directions.left),
+                Maze.neighbourAt(nodes, selected, directions.right),
+            ].filter(n => {
+                return n ? Maze.unvisited(nodes[n.row][n.column]) : false;
+            });
+
+            return unvisitedNeighbours.length ? unvisitedNeighbours : false;
+        }
+
+        function visitedNeighbours(nodes, selected) {
+            let visitedNeighbours = [
+                Maze.neighbourAt(nodes, selected, directions.up),
+                Maze.neighbourAt(nodes, selected, directions.down),
+                Maze.neighbourAt(nodes, selected, directions.left),
+                Maze.neighbourAt(nodes, selected, directions.right),
+            ].filter(n => {
+                return n ? !Maze.unvisited(nodes[n.row][n.column]) : false;
+            });
+
+            return visitedNeighbours.length ? visitedNeighbours : false;
+        }
+
+        function randomNeighbour(neighbours) {
+            if (neighbours) {
+                return neighbours[Math.floor(Math.random() * neighbours.length)];
+            } else {
+                return false;
+            }
+        }
 
         return nodes;
     }
@@ -415,4 +535,4 @@ function runTests() {
     console.log(maze);
 }
 
-runTests();
+//runTests();
