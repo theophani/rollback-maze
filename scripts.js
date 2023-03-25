@@ -215,10 +215,12 @@ class Maze {
         const nodes = Maze.makeNodes(rows, columns);
         const lastRowIndex = rows - 1;
 
+        Maze.makeNwBinaryTree(nodes);
+
         Maze.removeWall(nodes, 0, startColumn, directions.up);
         Maze.removeWall(nodes, lastRowIndex, endColumn, directions.down);
 
-        return Maze.makeNwBinaryTree(nodes);
+        return nodes;
     }
 
     static makeNwBinaryTree(nodes) {
@@ -235,8 +237,6 @@ class Maze {
                 }
             });
         });
-
-        return nodes;
     }
 
     enter(row, column) {
