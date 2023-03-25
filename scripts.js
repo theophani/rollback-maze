@@ -134,8 +134,9 @@ class Maze {
 
         boardElem.appendChild(mazeElem);
 
-        this.structure = Maze.makeMaze(rows, columns);
-        this.start = { row: -1, column: 0 };
+        this.start = { row: -1, column: Math.round(Math.random()*columns) };
+
+        this.structure = Maze.makeMaze(rows, columns, this.start.column, Math.round(Math.random() * columns));
 
         this.rows = this.structure.map(row => {
             return row.map(walls => {
@@ -209,12 +210,15 @@ class Maze {
         return nodes;
     }
 
-    static makeMaze(rows, columns) {
+    static makeMaze(rows, columns, startColumn, endColumn) {
+
+        startColumn = startColumn || 0;
+        endColumn = endColumn || 0;
 
         const nodes = Maze.makeNodes(rows, columns);
 
-        Maze.removeWall(nodes, 0, 0, directions.up);
-        Maze.removeWall(nodes, rows - 1, 1, directions.down);
+        Maze.removeWall(nodes, 0, startColumn, directions.up);
+        Maze.removeWall(nodes, rows - 1, endColumn, directions.down);
 
         nodes.forEach((row, i) => {
             row.forEach((_, j) => {
