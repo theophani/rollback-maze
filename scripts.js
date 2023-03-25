@@ -210,10 +210,7 @@ class Maze {
         return nodes;
     }
 
-    static makeMaze(rows, columns, startColumn, endColumn) {
-
-        startColumn = startColumn || 0;
-        endColumn = endColumn || 0;
+    static makeMaze(rows, columns, startColumn = 0, endColumn = 0) {
 
         const nodes = Maze.makeNodes(rows, columns);
 
