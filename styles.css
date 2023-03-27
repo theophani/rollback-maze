@@ -8,6 +8,10 @@ body {
   display: inline-block;
 }
 
+.row {
+  white-space: nowrap;
+}
+
 .square {
   display: inline-block;
   background-color: pink;
