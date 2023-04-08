@@ -72,9 +72,9 @@ class Board {
         this.elem = document.createElement("div");
         this.elem.className = "board";
 
-        this.maze = new Maze(this.elem, rows, columns, unitSize);
+        const maze = new Maze(this.elem, rows, columns, unitSize);
 
-        this.cursor = new Cursor(this.elem, unitSize, this.maze);
+        this.cursor = new Cursor(this.elem, unitSize, maze);
 
         return this;
     }
