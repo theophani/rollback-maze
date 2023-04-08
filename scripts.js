@@ -90,7 +90,7 @@ class Board {
             return direction === directions.down.mask;
         }
 
-        if (this.cursor.row === this.rows) {
+        if (this.cursor.row === this.maze.structure.length) {
             return direction === directions.up.mask;
         }
 
