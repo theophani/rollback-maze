@@ -71,8 +71,6 @@ class Board {
 
         this.elem = document.createElement("div");
         this.elem.className = "board";
-        this.rows = rows;
-        this.columns = columns;
 
         this.maze = new Maze(this.elem, rows, columns, unitSize);
 
