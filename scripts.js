@@ -458,7 +458,10 @@ class Cursor {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const structure = Maze.makeStructure(10, 20);
-    const board = new Board(structure, 50);
+    const rows = 10;
+    const columns = 20;
+    const unitSize = 50;
+    const structure = Maze.makeStructure(rows, columns);
+    const board = new Board(structure, unitSize);
     document.body.appendChild(board.elem);
 });
