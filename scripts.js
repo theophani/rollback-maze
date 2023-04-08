@@ -194,6 +194,22 @@ class Maze {
         return nodes;
     }
 
+    static flattenStructure (structure) {
+        return structure.map(row => {
+            return row.map(cellWalls => {
+                return cellWalls.toString(16);
+            }).join("");
+        }).join(",");
+    }
+
+    static inflateStructure (flatStructure) {
+        return flatStructure.split(",").map(row => {
+            return [...row].map(char => {
+                return parseInt(char, 16)
+            });
+        });
+    }
+
     static neighbourAt(nodes, selected, direction) {
         let row = selected.row;
         let column = selected.column;
@@ -461,7 +477,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const rows = 10;
     const columns = 20;
     const unitSize = 50;
-    const structure = Maze.makeStructure(rows, columns);
+    let structure;
+
+    let url = new URL(window.location.href);
+    let flatStructure = url.searchParams.get("maze");
+
+    if (flatStructure) {
+        structure = Maze.inflateStructure(flatStructure);
+    } else {
+        structure = Maze.makeStructure(rows, columns);
+    }
+
     const board = new Board(structure, unitSize);
     document.body.appendChild(board.elem);
 });
