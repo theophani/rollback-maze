@@ -362,7 +362,7 @@ class Cursor {
         boardElem.appendChild(this.elem);
 
         this.unitSize = unitSize;
-        this.cursorSize = unitSize/5;
+        this.cursorSize = unitSize/2;
 
         this.elem.style.width = `${this.cursorSize}px`;
         this.elem.style.height = `${this.cursorSize}px`;
