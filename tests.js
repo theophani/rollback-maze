@@ -82,7 +82,29 @@ function runTests() {
 
     })())
 
-    console.log(maze);
+    console.log("Maze.findStartColumn identifies the column where the maze opening is", (function () {
+
+        const structure1 = [
+            [0b1001, 0b0100, 0b1001, 0b1000, 0b1010, 0b1100],
+            [0b0101, 0b0011, 0b0110, 0b0101, 0b1001, 0b0100],
+        ];
+
+        const structure2 = [
+            [0b1001, 0b1100, 0b1001, 0b0000, 0b1010, 0b1100],
+            [0b0101, 0b0011, 0b0110, 0b0101, 0b1001, 0b0100],
+        ];
+
+        const structure3 = [
+            [0b1001, 0b1100, 0b1001, 0b1000, 0b1010, 0b0100],
+            [0b0101, 0b0011, 0b0110, 0b0101, 0b1001, 0b0100],
+        ];
+
+        return Maze.findStartColumn(structure1) === 1
+            && Maze.findStartColumn(structure2) === 3
+            && Maze.findStartColumn(structure3) === 5;
+
+    })())
+
 }
 
 runTests();

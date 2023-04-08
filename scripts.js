@@ -89,9 +89,9 @@ class Maze {
 
         boardElem.appendChild(mazeElem);
 
-        this.start = { row: -1, column: Math.floor(Math.random()*columns) };
+        this.structure = Maze.makeMaze(rows, columns);
 
-        this.structure = Maze.makeMaze(rows, columns, this.start.column, Math.floor(Math.random() * columns));
+        this.start = { row: -1, column: Maze.findStartColumn(this.structure) };
 
         this.rows = this.structure.map(row => {
             return row.map(walls => {
@@ -112,6 +112,20 @@ class Maze {
         });
 
         return this;
+    }
+
+    static findStartColumn(structure) {
+        let startRow = structure[0];
+        let i = 0;
+
+        while (i < startRow.length) {
+            let walls = startRow[i];
+            if (walls & directions.up.mask) {
+                i++;
+            } else {
+                return i;
+            }
+        };
     }
 
     static unvisited(node) {
@@ -165,10 +179,12 @@ class Maze {
         return nodes;
     }
 
-    static makeMaze(rows, columns, startColumn = 0, endColumn = 0) {
+    static makeMaze(rows, columns) {
 
         const nodes = Maze.makeNodes(rows, columns);
         const lastRowIndex = rows - 1;
+        const startColumn = Math.floor(Math.random() * columns);
+        const endColumn = Math.floor(Math.random() * columns);
 
         Maze.performHuntAndKill(nodes);
 
