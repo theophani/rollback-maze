@@ -78,54 +78,7 @@ class Board {
 
         this.cursor = new Cursor(this.elem, unitSize, this.maze);
 
-        document.addEventListener("keydown", event => {
-            this.attemptCursorMove(event);
-        })
-
         return this;
-    }
-
-    allowedToMove(direction) {
-        if (this.cursor.row === -1) {
-            return direction === directions.down.mask;
-        }
-
-        if (this.cursor.row === this.maze.structure.length) {
-            return direction === directions.up.mask;
-        }
-
-        const constraints = this.maze.structure[this.cursor.row][this.cursor.column];
-
-        // the constraints describe walls, i.e. where the cursor CAN’T go
-        if (constraints & direction) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    attemptCursorMove(e) {
-        e = e || window.event;
-
-        // up arrow
-        if (e.keyCode == '38' && this.allowedToMove(directions.up.mask)) {
-            this.cursor.moveUp();
-        }
-
-        // down arrow
-        else if (e.keyCode == '40' && this.allowedToMove(directions.down.mask)) {
-            this.cursor.moveDown();
-        }
-
-        // left arrow
-        else if (e.keyCode == '37' && this.allowedToMove(directions.left.mask)) {
-            this.cursor.moveLeft();
-        }
-
-        // right arrow
-        else if (e.keyCode == '39' && this.allowedToMove(directions.right.mask)) {
-            this.cursor.moveRight();
-        }
     }
 }
 
@@ -390,7 +343,54 @@ class Cursor {
 
         this.#setPosition(maze.start);
 
+        document.addEventListener("keydown", event => {
+            this.attemptCursorMove(event);
+        })
+
         return this;
+    }
+
+    allowedToMove(direction) {
+        if (this.row === -1) {
+            return direction === directions.down.mask;
+        }
+
+        if (this.row === this.maze.structure.length) {
+            return direction === directions.up.mask;
+        }
+
+        const constraints = this.maze.structure[this.row][this.column];
+
+        // the constraints describe walls, i.e. where the cursor CAN’T go
+        if (constraints & direction) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    attemptCursorMove(e) {
+        e = e || window.event;
+
+        // up arrow
+        if (e.keyCode == '38' && this.allowedToMove(directions.up.mask)) {
+            this.moveUp();
+        }
+
+        // down arrow
+        else if (e.keyCode == '40' && this.allowedToMove(directions.down.mask)) {
+            this.moveDown();
+        }
+
+        // left arrow
+        else if (e.keyCode == '37' && this.allowedToMove(directions.left.mask)) {
+            this.moveLeft();
+        }
+
+        // right arrow
+        else if (e.keyCode == '39' && this.allowedToMove(directions.right.mask)) {
+            this.moveRight();
+        }
     }
 
     #move() {
