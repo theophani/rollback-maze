@@ -1,5 +1,7 @@
 body {
   text-align: center;
+  font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #333;
 }
 
 .board {
@@ -76,21 +78,19 @@ body {
   margin: 0.5em;
 }
 
-.sharing-link-box input {
-  font-size: 1em;
-  padding: 0.5em;
-  max-width: 75%;
-  min-width: 30em;
-}
-
 .sharing-link-box a {
   display: block;
   margin: 0.5em;
+  color: blue;
 }
 
 @media (prefers-color-scheme: dark) {
   body {
     background: #333;
+      color: #fff;
+  }
+  .sharing-link-box a {
+    color: rgb(128, 128, 249);
   }
   .cursor {
     background-color: rgb(76, 76, 255);

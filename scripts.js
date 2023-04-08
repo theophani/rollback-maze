@@ -483,19 +483,13 @@ function shareBox(url, structure) {
     label.innerText = "Shareable link to this exact maze:"
     label.for = "share-link";
 
-    const field = document.createElement("input");
-    field.classList.add("share-link");
-    field.name = "share-link";
-    field.type = "text";
-    field.value = url.href;
-
     const link = document.createElement("a");
     link.classList.add("share-link");
+    link.name = "share-link"
     link.innerText = `${url.href.slice(0, 100)}…`;
     link.href = url.href;
 
     box.appendChild(label);
-    box.appendChild(field);
     box.appendChild(link);
 
     return box;
