@@ -345,7 +345,7 @@ class Cursor {
 
         document.addEventListener("keydown", event => {
             this.#attemptMove(event);
-        })
+        });
 
         return this;
     }
