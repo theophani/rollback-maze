@@ -89,7 +89,7 @@ class Maze {
 
         boardElem.appendChild(mazeElem);
 
-        this.structure = Maze.makeMaze(rows, columns);
+        this.structure = Maze.makeStructure(rows, columns);
 
         this.start = { row: -1, column: Maze.findStartColumn(this.structure) };
 
@@ -179,7 +179,7 @@ class Maze {
         return nodes;
     }
 
-    static makeMaze(rows, columns) {
+    static makeStructure(rows, columns) {
 
         const nodes = Maze.makeNodes(rows, columns);
         const lastRowIndex = rows - 1;

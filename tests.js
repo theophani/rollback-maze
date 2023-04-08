@@ -1,10 +1,10 @@
 function runTests() {
     const rows = 3;
     const columns = 7;
-    const maze = Maze.makeMaze(rows, columns);
+    const maze = Maze.makeStructure(rows, columns);
 
-    console.log("Maze.makeMaze returns a grid with the desired number of rows and columns:", (function () {
-        return (maze.length === rows) && Maze.makeMaze(rows, columns).filter((row) => {
+    console.log("Maze.makeStructure returns a grid with the desired number of rows and columns:", (function () {
+        return (maze.length === rows) && Maze.makeStructure(rows, columns).filter((row) => {
             return row.length === columns;
         }).length === rows;
     })());
