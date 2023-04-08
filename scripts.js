@@ -344,13 +344,13 @@ class Cursor {
         this.#setPosition(maze.start);
 
         document.addEventListener("keydown", event => {
-            this.attemptCursorMove(event);
+            this.#attemptMove(event);
         })
 
         return this;
     }
 
-    allowedToMove(direction) {
+    #allowedToMove(direction) {
         if (this.row === -1) {
             return direction === directions.down.mask;
         }
@@ -369,26 +369,26 @@ class Cursor {
         }
     }
 
-    attemptCursorMove(e) {
+    #attemptMove(e) {
         e = e || window.event;
 
         // up arrow
-        if (e.keyCode == '38' && this.allowedToMove(directions.up.mask)) {
+        if (e.keyCode == '38' && this.#allowedToMove(directions.up.mask)) {
             this.moveUp();
         }
 
         // down arrow
-        else if (e.keyCode == '40' && this.allowedToMove(directions.down.mask)) {
+        else if (e.keyCode == '40' && this.#allowedToMove(directions.down.mask)) {
             this.moveDown();
         }
 
         // left arrow
-        else if (e.keyCode == '37' && this.allowedToMove(directions.left.mask)) {
+        else if (e.keyCode == '37' && this.#allowedToMove(directions.left.mask)) {
             this.moveLeft();
         }
 
         // right arrow
-        else if (e.keyCode == '39' && this.allowedToMove(directions.right.mask)) {
+        else if (e.keyCode == '39' && this.#allowedToMove(directions.right.mask)) {
             this.moveRight();
         }
     }
