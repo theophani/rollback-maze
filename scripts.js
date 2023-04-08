@@ -473,6 +473,34 @@ class Cursor {
     }
 }
 
+function shareBox(url, structure) {
+    url.searchParams.set("maze", Maze.flattenStructure(structure));
+
+    const box = document.createElement("div");
+    box.classList.add("sharing-link-box");
+
+    const label = document.createElement("label");
+    label.innerText = "Shareable link to this exact maze:"
+    label.for = "share-link";
+
+    const field = document.createElement("input");
+    field.classList.add("share-link");
+    field.name = "share-link";
+    field.type = "text";
+    field.value = url.href;
+
+    const link = document.createElement("a");
+    link.classList.add("share-link");
+    link.innerText = `${url.href.slice(0, 100)}…`;
+    link.href = url.href;
+
+    box.appendChild(label);
+    box.appendChild(field);
+    box.appendChild(link);
+
+    return box;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const rows = 10;
     const columns = 20;
@@ -490,4 +518,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const board = new Board(structure, unitSize);
     document.body.appendChild(board.elem);
+    document.body.appendChild(shareBox(url, structure));
 });
