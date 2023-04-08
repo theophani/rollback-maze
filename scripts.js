@@ -67,12 +67,12 @@ class Square {
 }
 
 class Board {
-    constructor(rows, columns, unitSize) {
+    constructor(structure, unitSize) {
 
         this.elem = document.createElement("div");
         this.elem.className = "board";
 
-        const maze = new Maze(this.elem, rows, columns, unitSize);
+        const maze = new Maze(this.elem, structure, unitSize);
 
         this.cursor = new Cursor(this.elem, unitSize, maze);
 
@@ -81,7 +81,7 @@ class Board {
 }
 
 class Maze {
-    constructor(boardElem, rows, columns, unitSize) {
+    constructor(boardElem, structure, unitSize) {
 
         const mazeElem = document.createElement("div");
         this.elem = mazeElem;
@@ -89,7 +89,7 @@ class Maze {
 
         boardElem.appendChild(mazeElem);
 
-        this.structure = Maze.makeStructure(rows, columns);
+        this.structure = structure;
 
         this.start = { row: -1, column: Maze.findStartColumn(this.structure) };
 
@@ -458,6 +458,7 @@ class Cursor {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const board = new Board(10, 20, 50);
+    const structure = Maze.makeStructure(10, 20);
+    const board = new Board(structure, 50);
     document.body.appendChild(board.elem);
 });
