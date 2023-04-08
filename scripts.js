@@ -514,7 +514,7 @@ function reloadBox(href) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const rows = 10;
+    const rows = 20;
     const columns = 20;
     const unitSize = 50;
     let structure;
