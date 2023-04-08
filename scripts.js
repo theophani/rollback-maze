@@ -74,7 +74,7 @@ class Board {
 
         const maze = new Maze(this.elem, rows, columns, unitSize);
 
-        this.cursor = new Cursor(this.elem, maze);
+        this.cursor = new Cursor(this.elem, unitSize, maze);
 
         return this;
     }
@@ -88,8 +88,6 @@ class Maze {
         this.elem.className = "maze";
 
         boardElem.appendChild(mazeElem);
-
-        this.unitSize = unitSize;
 
         this.start = { row: -1, column: Math.floor(Math.random()*columns) };
 
@@ -326,13 +324,13 @@ class Maze {
 }
 
 class Cursor {
-    constructor(boardElem, maze) {
+    constructor(boardElem, unitSize, maze) {
         this.elem = document.createElement("div");
         this.elem.className = "cursor";
         boardElem.appendChild(this.elem);
 
-        this.unitSize = maze.unitSize;
-        this.cursorSize = this.unitSize/5;
+        this.unitSize = unitSize;
+        this.cursorSize = unitSize/5;
 
         this.elem.style.width = `${this.cursorSize}px`;
         this.elem.style.height = `${this.cursorSize}px`;
