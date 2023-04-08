@@ -473,7 +473,8 @@ class Cursor {
     }
 }
 
-function shareBox(url, structure) {
+function shareBox(href, structure) {
+    const url = new URL(href);
     url.searchParams.set("maze", Maze.flattenStructure(structure));
 
     const box = document.createElement("div");
@@ -495,14 +496,31 @@ function shareBox(url, structure) {
     return box;
 }
 
+function reloadBox(href) {
+    const url = new URL(href);
+    url.searchParams.delete("maze");
+
+    const box = document.createElement("div");
+    box.classList.add("reload-box");
+
+    const link = document.createElement("a");
+    link.classList.add("button");
+    link.innerText = "Try a new maze";
+    link.href = url.href;
+
+    box.appendChild(link);
+
+    return box;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const rows = 10;
     const columns = 20;
     const unitSize = 50;
     let structure;
 
-    let url = new URL(window.location.href);
-    let flatStructure = url.searchParams.get("maze");
+    const url = new URL(window.location.href);
+    const flatStructure = url.searchParams.get("maze");
 
     if (flatStructure) {
         structure = Maze.inflateStructure(flatStructure);
@@ -512,5 +530,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const board = new Board(structure, unitSize);
     document.body.appendChild(board.elem);
-    document.body.appendChild(shareBox(url, structure));
+    document.body.appendChild(shareBox(window.location.href, structure));
+    document.body.appendChild(reloadBox(window.location.href));
 });

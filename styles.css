@@ -70,18 +70,40 @@ body {
 }
 
 .sharing-link-box {
-  margin: 0.5em;
+  margin: 1em;
 }
 
 .sharing-link-box label {
   display: block;
-  margin: 0.5em;
+  margin: 1em;
 }
 
 .sharing-link-box a {
   display: block;
   margin: 0.5em;
   color: blue;
+}
+
+.reload-box {
+  margin: 2em;
+}
+
+.button {
+  color: #111;
+  font-size: 1em;
+  border: 1px solid #bbb;
+  background: #e6e6e6 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAGQCAYAAABvWArbAAAANUlEQVQ4je3LMQoAIBADwb38/6t5wFXaWAiCtUiaYZvF9hBACOFbuntVVe11B0CSjjeE8BwThQIJ8dhEl0YAAAAASUVORK5CYII) 50% 50% repeat-x;
+  font-weight: normal;
+  border-radius: 4px;
+  padding: 0.4em 1em;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.button:not(:disabled):hover {
+  border-color: #999;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAGQCAYAAABvWArbAAAANklEQVQ4jWN48uTJfyYGBgaGUWKUGCWGLfHt2zcoi5GREYNgYmJCZiG42IiB98woMUqMEtgIAMdjCdyg+eEBAAAAAElFTkSuQmCC);
+  color: #000;
 }
 
 @media (prefers-color-scheme: dark) {
