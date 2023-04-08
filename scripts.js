@@ -382,22 +382,21 @@ class Cursor {
     }
 
     #allowedToMove(direction) {
-        if (this.row === -1) {
+        const isAboveMaze = this.row === -1;
+        const isBelowMaze = this.row === this.maze.structure.length;
+
+        if (isAboveMaze) {
             return direction === directions.down.mask;
         }
 
-        if (this.row === this.maze.structure.length) {
+        if (isBelowMaze) {
             return direction === directions.up.mask;
         }
 
         const constraints = this.maze.structure[this.row][this.column];
+        const isPreventedFromMoving = constraints & direction;
 
-        // the constraints describe walls, i.e. where the cursor CAN’T go
-        if (constraints & direction) {
-            return false;
-        } else {
-            return true;
-        }
+        return !isPreventedFromMoving;
     }
 
     #attemptMove(e) {
