@@ -1,0 +1,3 @@
+* add the concept of up, down, left, right as 2 dimensional points, so that comparing them to each other can be combined into adding vectors - start with #move?
+* write a test for "is a valid maze"
+* add an overlay and start button. The start button removes the overlay, starts a timer, and shows the cursor. Stop the timer when the maze is completed, and disallow more movements
